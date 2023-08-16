@@ -21,14 +21,19 @@ cannot create "PERSON_997" or "PERSON_999" if "PERSON_997" or "PERSON_999" is
 not in the question.
 
 Conversation History: ```{history}```
-Context : ```Mr. Carl Smith is a 31-year-old man who has been experiencing
-homelessness on and off for all his adult life. Mr. Smith says he is about
-5’5” and weighs approximately 129 lbs. He presents as
-very thin, typically wearing a clean white undershirt
-and loose-fitting khaki shorts at interviews.
-His brown hair is disheveled and dirty looking, and
-he constantly fidgets and shakes his hand or
-knee during interviews. Despite his best efforts, Carl is a poor historian. ```
+Context : ```During our recent meeting on February 23, 2023, at 10:30 AM,
+John Doe provided me with his personal details. His email is johndoe@example.com and
+his contact number is +1-123-456-7890. He lives in New York City, USA, and belongs to
+the American nationality with Christian beliefs and a leaning towards the Democratic party.
+He mentioned that he recently made a transaction using his credit card 4111 1111 1111 1111
+and transferred bitcoins to the wallet address 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa.
+While discussing his European travels, he noted down his IBAN as GB29 NWBK 6016 1331 9268 19.
+Additionally, he provided his website as https://johndoeportfolio.com. John also discussed
+some of his US-specific details. He said his bank account number is 1234567890123456 and his
+drivers license is Y12345678. His ITIN is 987-65-4321, and he recently renewed his passport,
+the number for which is 123456789. He emphasized not to share his SSN, which is 123-45-6789.
+Furthermore, he mentioned that he accesses his work files remotely through the IP 192.168.1.1
+and has a medical license number MED-123456. ```
 Question: ```{question}```
 """
 
@@ -40,7 +45,7 @@ def test_promptguard_llm_wrapper() -> None:
         memory=ConversationBufferWindowMemory(k=2),
     )
 
-    output = chain.run({"question": """How tall is he? """})
+    output = chain.run({"question": "Write a text message to remind John to do password reset for his website through his email to stay secure."})
     assert isinstance(output, str)
 
 
@@ -61,4 +66,4 @@ def test_promptguard_functions() -> None:
         | (lambda x: pgf.desanitize(x["response"], x["secure_context"]))
     )
 
-    pg_chain.invoke({"question": "How tall is he?", "history": ""})
+    pg_chain.invoke({"question": "Write a text message to remind John to do password reset for his website through his email to stay secure.", "history": ""})
