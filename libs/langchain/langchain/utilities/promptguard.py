@@ -6,7 +6,17 @@ def sanitize(
     input: Union[str, Dict[str, str]]
 ) -> Dict[str, Union[str, Dict[str, str]]]:
     """
-    sanitize input string or dict of strings
+    sanitize input string or dict of strings by replacing sensitive data with
+    placeholders.
+    It returns the sanitized input string or dict of strings and the secure
+    context as a dict following the format:
+    {
+        "sanitized_input": <sanitized input string or dict of strings>,
+        "secure_context": <secure context>
+    }
+
+    The secure context is a bytes object that can be used to desanitize the response
+    from llm.
 
     Parameters
     ----------
@@ -26,9 +36,13 @@ def sanitize(
     try:
         import promptguard as pg
     except ImportError:
-        raise ImportError("You must install promptguard to use the sanitize function")
+        raise ImportError(
+            "Could not import the `promptguard` python package. "
+            "Please install it with `pip install promptguard`."
+        )
 
     if isinstance(input, str):
+        # the input could be a string, so we sanitize the string
         sanitize_response: pg.SanitizeResponse = pg.sanitize(input)
         return {
             "sanitized_input": sanitize_response.sanitized_text,
@@ -36,17 +50,25 @@ def sanitize(
         }
 
     if isinstance(input, dict):
+        # the input could be a dict[string, string], so we sanitize the values
         values = list()
+
+        # get the values from the dict
         for key in input:
             values.append(input[key])
         input_value_str = json.dumps(values)
+
+        # sanitize the values
         sanitize_values_response: pg.SanitizeResponse = pg.sanitize(input_value_str)
+
+        # reconstruct the dict with the sanitized values
         sanitized_input_values = json.loads(sanitize_values_response.sanitized_text)
         idx = 0
         sanitized_input = dict()
         for key in input:
             sanitized_input[key] = sanitized_input_values[idx]
             idx += 1
+
         return {
             "sanitized_input": sanitized_input,
             "secure_context": sanitize_values_response.secure_context,
@@ -57,7 +79,7 @@ def sanitize(
 
 def desanitize(sanitized_text: str, secure_context: bytes) -> str:
     """
-    desanitize sanitized text
+    desanitize() restores the original sensitive data from the sanitized text
 
     Parameters
     ----------
@@ -69,11 +91,15 @@ def desanitize(sanitized_text: str, secure_context: bytes) -> str:
     Returns
     -------
     str
+        desanitized text
     """
     try:
         import promptguard as pg
     except ImportError:
-        raise ImportError("You must install promptguard to use the desanitize function")
+        raise ImportError(
+            "Could not import the `promptguard` python package. "
+            "Please install it with `pip install promptguard`."
+        )
     desanitize_response: pg.DesanitizeResponse = pg.desanitize(
         sanitized_text, secure_context
     )

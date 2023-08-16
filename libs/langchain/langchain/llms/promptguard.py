@@ -13,11 +13,12 @@ logger = logging.getLogger(__name__)
 
 class PromptGuardLLMWrapper(LLM):
     """
-    A LLM that uses the PromptGuard library to sanitize and desanitize.
-
+    A LLM wrapper that uses the PromptGuard to sanitize the prompt before
+    passing it to the LLM, and desanitize the response after
+    getting it from the LLM.
 
     To use, you should have the `promptguard` python package installed,
-    and the environment variable `PROMPT_GUARD_ACCESS_TOKEN` set with
+    and the environment variable `PROMPTGUARD_API_KEY` set with
     your access token, or pass it as a named parameter to the constructor.
 
     Example:
@@ -36,15 +37,15 @@ class PromptGuardLLMWrapper(LLM):
 
     @root_validator()
     def validate_environment(cls, values: Dict) -> Dict:
-        """Validate that the access token and python package exists
+        """Validate that the promptguard api key and python package exists
         in environment."""
         token = get_from_dict_or_env(
-            values, "prompt_guard_access_token", "PROMPT_GUARD_ACCESS_TOKEN"
+            values, "promptguard_api_key", "PROMPTGUARD_API_KEY"
         )
         if token is None:
             raise ValueError(
-                "Could not find PROMPT_GUARD_ACCESS_TOKEN in environment. "
-                "Please set it to your PromptGuard access token."
+                "Could not find PROMPTGUARD_API_KEY in environment. "
+                "Please set it to your PromptGuard api key."
             )
         try:
             import promptguard as pg
@@ -52,7 +53,7 @@ class PromptGuardLLMWrapper(LLM):
             assert pg.__package__ is not None
         except ImportError:
             raise ImportError(
-                "Could not import promptguard python package. "
+                "Could not import the `promptguard` python package. "
                 "Please install it with `pip install promptguard`."
             )
         return values
@@ -64,7 +65,7 @@ class PromptGuardLLMWrapper(LLM):
         run_manager: Optional[CallbackManagerForLLMRun] = None,
         **kwargs: Any,
     ) -> str:
-        """Call out to prompt guard to do sanitization and desanitization
+        """Call out to PromptGuard to do sanitization and desanitization
         before and after running LLM.
         Args:
             prompt: The prompt to pass into the model.
@@ -74,19 +75,19 @@ class PromptGuardLLMWrapper(LLM):
             .. code-block:: python
                 response = prompt_guard_llm("Tell me a joke.")
         """
-        from promptguard import (
-            DesanitizeResponse,
-            SanitizeResponse,
-            desanitize,
-            sanitize,
-        )
+        import promptguard as pg
 
-        sanitize_response: SanitizeResponse = sanitize(prompt)
+        # sanitize the prompt, by replacing the sensitive information with a placeholder
+        sanitize_response: pg.SanitizeResponse = pg.sanitize(prompt)
         sanitized_prompt_value_str = sanitize_response.sanitized_text
+
+        # call the llm with the sanitized prompt and get the response
         llm_response = self.llm.generate_prompt(
             [StringPromptValue(text=sanitized_prompt_value_str)],
         )
-        desanitize_response: DesanitizeResponse = desanitize(
+
+        # desanitize the response by restoring the original sensitive information
+        desanitize_response: pg.DesanitizeResponse = pg.desanitize(
             llm_response.generations[0][0].text,
             secure_context=sanitize_response.secure_context,
         )
