@@ -67,6 +67,9 @@ class PromptGuardLLMWrapper(LLM):
     ) -> str:
         """Call out to PromptGuard to do sanitization and desanitization
         before and after running LLM.
+
+        This is an override of the base class method.
+
         Args:
             prompt: The prompt to pass into the model.
         Returns:
@@ -95,5 +98,8 @@ class PromptGuardLLMWrapper(LLM):
 
     @property
     def _llm_type(self) -> str:
-        """Return type of llm."""
+        """Return type of llm.
+
+        This is an override of the base class method.
+        """
         return "promptguard"
