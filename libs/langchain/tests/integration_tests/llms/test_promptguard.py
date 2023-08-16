@@ -23,7 +23,7 @@ not in the question.
 Conversation History: ```{history}```
 Context : ```During our recent meeting on February 23, 2023, at 10:30 AM,
 John Doe provided me with his personal details. His email is johndoe@example.com
-and his contact number is +1-123-456-7890. He lives in New York City, USA, and
+and his contact number is 650-456-7890. He lives in New York City, USA, and
 belongs to the American nationality with Christian beliefs and a leaning towards
 the Democratic party. He mentioned that he recently made a transaction using his
 credit card 4111 1111 1111 1111 and transferred bitcoins to the wallet address
