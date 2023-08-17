@@ -46,6 +46,7 @@ class PromptGuardLLMWrapper(LLM):
             raise ValueError(
                 "Could not find PROMPTGUARD_API_KEY in environment. "
                 "Please set it to your PromptGuard api key."
+                "You can get one at <UI> after accepted from the waitlist."
             )
         try:
             import promptguard as pg
