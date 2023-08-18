@@ -43,8 +43,8 @@ class PromptGuardLLMWrapper(LLM):
         )
         if token is None:
             raise ValueError(
-                "Could not find PROMPTGUARD_API_KEY in environment. "
-                "Please set it to your PromptGuard api key."
+                "Could not find PROMPTGUARD_API_KEY in the environment. "
+                "Please set it to your PromptGuard API key."
                 "You can get one at <UI> after accepted from the waitlist."
             )
         try:
