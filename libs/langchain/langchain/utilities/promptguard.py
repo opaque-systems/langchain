@@ -32,6 +32,8 @@ def sanitize(
             "sanitized_input": <sanitized input string or dict of strings>,
             "secure_context": <secure context>
         }
+
+        The `secure_context` needs to be passed to the `desanitize` function.
     """
     try:
         import promptguard as pg
