@@ -53,8 +53,8 @@ class PromptGuardLLMWrapper(LLM):
             assert pg.__package__ is not None
         except ImportError:
             raise ImportError(
-                "Could not import the `promptguard` python package. "
-                "Please install it with `pip install promptguard`."
+                "Could not import the `promptguard` Python package, "
+                "please install it with `pip install promptguard`."
             )
         return values
 
