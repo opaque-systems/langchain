@@ -13,8 +13,8 @@ logger = logging.getLogger(__name__)
 
 class PromptGuardLLMWrapper(LLM):
     """
-    A LLM wrapper that uses the PromptGuard to sanitize the prompt before
-    passing it to the LLM, and desanitize the response after
+    An LLM wrapper that uses PromptGuard to sanitize the prompt before
+    passing it to the LLM, and that desanitizes the response after
     getting it from the LLM.
 
     To use, you should have the `promptguard` python package installed,
