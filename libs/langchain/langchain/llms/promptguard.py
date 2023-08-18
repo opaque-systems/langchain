@@ -80,7 +80,7 @@ class PromptGuardLLMWrapper(LLM):
         """
         import promptguard as pg
 
-        # sanitize the prompt, by replacing the sensitive information with a placeholder
+        # sanitize the prompt by replacing the sensitive information with a placeholder
         sanitize_response: pg.SanitizeResponse = pg.sanitize(prompt)
         sanitized_prompt_value_str = sanitize_response.sanitized_text
 
