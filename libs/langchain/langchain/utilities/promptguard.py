@@ -6,7 +6,7 @@ def sanitize(
     input: Union[str, Dict[str, str]]
 ) -> Dict[str, Union[str, Dict[str, str]]]:
     """
-    sanitize input string or dict of strings by replacing sensitive data with
+    Sanitize input string or dict of strings by replacing sensitive data with
     placeholders.
     It returns the sanitized input string or dict of strings and the secure
     context as a dict following the format:
@@ -39,8 +39,8 @@ def sanitize(
         import promptguard as pg
     except ImportError:
         raise ImportError(
-            "Could not import the `promptguard` python package. "
-            "Please install it with `pip install promptguard`."
+            "Could not import the `promptguard` Python package, "
+            "please install it with `pip install promptguard`."
         )
 
     if isinstance(input, str):
@@ -81,14 +81,14 @@ def sanitize(
 
 def desanitize(sanitized_text: str, secure_context: bytes) -> str:
     """
-    desanitize() restores the original sensitive data from the sanitized text
+    desanitize() restores the original sensitive data from the sanitized text.
 
     Parameters
     ----------
     sanitized_text : str
         sanitized text
     secure_context : bytes
-        secure context
+        secure context returned by the `sanitize` function
 
     Returns
     -------
@@ -99,8 +99,8 @@ def desanitize(sanitized_text: str, secure_context: bytes) -> str:
         import promptguard as pg
     except ImportError:
         raise ImportError(
-            "Could not import the `promptguard` python package. "
-            "Please install it with `pip install promptguard`."
+            "Could not import the `promptguard` Python package, "
+            "please install it with `pip install promptguard`."
         )
     desanitize_response: pg.DesanitizeResponse = pg.desanitize(
         sanitized_text, secure_context

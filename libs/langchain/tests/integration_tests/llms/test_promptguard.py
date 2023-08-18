@@ -9,16 +9,18 @@ from langchain.schema.runnable import RunnableMap
 prompt_template = """
 As an AI assistant, you will answer questions according to given context.
 
-Important PII data is sanitized in the question.
-For example, "Giana is good" is sanitized to "PERSON_998 is good".
-You must treat the sanitized data as opaque strings, but you can use them as
-meaningful entities in the response.
-Different sanitized items could be the same entity based on the semantics.
-You must keep the sanitized item as is and cannot change it.
-The format of sanitized item is "TYPE_ID".
-You must not create new sanitized items following the format. For example, you
-cannot create "PERSON_997" or "PERSON_999" if "PERSON_997" or "PERSON_999" is
-not in the question.
+Sensitive personal information in the question is masked for privacy.
+For instance, if the original text says "Giana is good," it will be changed
+to "PERSON_998 is good."
+
+Here's how to handle these changes:
+* Consider these masked phrases just as placeholders, but still refer to
+them in a relevant way when answering.
+* It's possible that different masked terms might mean the same thing.
+Stick with the given term and don't modify it.
+* All masked terms follow the "TYPE_ID" pattern.
+* Please don't invent new masked terms. For instance, if you see "PERSON_998,"
+don't come up with "PERSON_997" or "PERSON_999" unless they're already in the question.
 
 Conversation History: ```{history}```
 Context : ```During our recent meeting on February 23, 2023, at 10:30 AM,
