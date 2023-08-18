@@ -37,8 +37,7 @@ class PromptGuardLLMWrapper(LLM):
 
     @root_validator()
     def validate_environment(cls, values: Dict) -> Dict:
-        """Validate that the promptguard api key and python package exists
-        in environment."""
+        """Validates that the PromptGuard API key and the Python package exist."""
         token = get_from_dict_or_env(
             values, "promptguard_api_key", "PROMPTGUARD_API_KEY"
         )
