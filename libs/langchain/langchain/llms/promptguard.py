@@ -19,7 +19,7 @@ class PromptGuardLLMWrapper(LLM):
 
     To use, you should have the `promptguard` python package installed,
     and the environment variable `PROMPTGUARD_API_KEY` set with
-    your access token, or pass it as a named parameter to the constructor.
+    your API key, or pass it as a named parameter to the constructor.
 
     Example:
         .. code-block:: python
@@ -38,15 +38,15 @@ class PromptGuardLLMWrapper(LLM):
     @root_validator()
     def validate_environment(cls, values: Dict) -> Dict:
         """Validates that the PromptGuard API key and the Python package exist."""
-        token = get_from_dict_or_env(
+        api_key = get_from_dict_or_env(
             values, "promptguard_api_key", "PROMPTGUARD_API_KEY"
         )
-        if token is None:
+        if api_key is None:
             raise ValueError(
                 "Could not find PROMPTGUARD_API_KEY in the environment. "
                 "Please set it to your PromptGuard API key."
-                "You can get it by creating an account on the (PromptGuard website)"
-                "[https://promptguard.opaque.co/]."
+                "You can get it by creating an account on the PromptGuard website: "
+                "https://promptguard.opaque.co/ ."
             )
         try:
             import promptguard as pg

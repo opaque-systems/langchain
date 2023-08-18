@@ -15,8 +15,8 @@ def sanitize(
         "secure_context": <secure context>
     }
 
-    The secure context is a bytes object that can be used to desanitize the response
-    from llm.
+    The secure context is a bytes object that is needed to desanitize the response
+    from the LLM.
 
     Parameters
     ----------
