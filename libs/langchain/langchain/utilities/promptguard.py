@@ -81,7 +81,7 @@ def sanitize(
 
 def desanitize(sanitized_text: str, secure_context: bytes) -> str:
     """
-    desanitize() restores the original sensitive data from the sanitized text.
+    Restore the original sensitive data from the sanitized text.
 
     Parameters
     ----------

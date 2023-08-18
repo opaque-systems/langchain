@@ -90,7 +90,7 @@ class PromptGuardLLMWrapper(LLM):
         sanitize_response: pg.SanitizeResponse = pg.sanitize(prompt)
         sanitized_prompt_value_str = sanitize_response.sanitized_text
 
-        # call the llm with the sanitized prompt and get the response
+        # call the LLM with the sanitized prompt and get the response
         llm_response = self.llm.generate_prompt(
             [StringPromptValue(text=sanitized_prompt_value_str)],
         )
