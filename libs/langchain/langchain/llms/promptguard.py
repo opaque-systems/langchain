@@ -98,7 +98,7 @@ class PromptGuardLLMWrapper(LLM):
 
     @property
     def _llm_type(self) -> str:
-        """Return type of llm.
+        """Return type of LLM.
 
         This is an override of the base class method.
         """
